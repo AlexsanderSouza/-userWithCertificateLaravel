@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+/* Rota para fazer login na API */
+Route::post('login', 'App\Http\Controllers\API\LoginController@login');
+
+/* Rotas de usuário só são acessadas com autorização */
+Route::middleware('auth:api')->group( function () {
+    Route::apiResource('users', 'App\Http\Controllers\API\UserController');
 });
