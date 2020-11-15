@@ -29,9 +29,9 @@ interface IUserRepository
     /**
      * atualiza um  usuário e retorna o mesmo
      *
-     * @return User
+     * @return boolean
      */
-    public function update(array $data, $id);
+    public function update(array $data, $id): bool;
 
     /**
      * busca ou cria um usuário e retorna o mesmo
@@ -43,9 +43,9 @@ interface IUserRepository
     /**
      * apaga um usuário e retorna o sucesso
      *
-     * @return User
+     * @return boolean
      */
-    public function delete($id);
+    public function delete($id): bool;
 
     /**
      * Verifica se a entrada de dados corresponde a um usuário valido

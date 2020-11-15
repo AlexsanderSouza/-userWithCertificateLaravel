@@ -60,6 +60,37 @@ class UserController extends Controller
     }
 
     /**
+     * Atualiza um usuário
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  integer  $userId
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $userId)
+    {
+        DB::beginTransaction();
+        try {
+            /* verifica se o usuário e o id é valido */
+            $validator = $this->iUserRepository->validate($request->all());
+            if ($validator->fails()) return response()->json(['error'=> $validator->errors()], 401);
+            if(intval($userId) === 0) return response()->json(['error'=> 'O parametro não é um numero inteiro valido'], 401);
+
+            /* todos os dados do corpo da requisição */
+            $input = $request->all(); 
+            /* encripta a senha */
+            $input['password'] = bcrypt($input['password']); 
+            /* cria o usuário */
+            $success = $this->iUserRepository->update($input, $userId);
+
+            DB::commit();
+            return response()->json(['success'=> $success], $this->successStatus);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error'=> $e->message], $this->successStatus); 
+        }
+    }
+
+    /**
      * Retorna o usuário
      *
      * @param  integer  $userId

@@ -43,7 +43,7 @@ abstract class AbstractRepository
      *
      * @return model
      */
-    public function update(array $data, $id)
+    public function update(array $data, $id): bool
     {
         return $this->model->find($id)->update($data);
     }
@@ -63,7 +63,7 @@ abstract class AbstractRepository
      *
      * @return model
      */
-    public function delete($id)
+    public function delete($id): bool
     {
         return $this->model->find($id)->delete();
     }
