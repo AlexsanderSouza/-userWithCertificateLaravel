@@ -16,9 +16,12 @@ use App\Http\Controllers\API;
 */
 
 /* Rota para fazer login na API */
-Route::post('login', 'App\Http\Controllers\API\LoginController@login');
+Route::post('login', 'App\Http\Controllers\API\LoginController@login')->name('users_login');
+Route::post('users', 'App\Http\Controllers\API\UserController@store')->name('users_store');
 
 /* Rotas de usuário só são acessadas com autorização */
 Route::middleware('auth:api')->group( function () {
-    Route::apiResource('users', 'App\Http\Controllers\API\UserController');
+    Route::apiResource('users', 'App\Http\Controllers\API\UserController')->except([
+        'store'
+    ]);
 });

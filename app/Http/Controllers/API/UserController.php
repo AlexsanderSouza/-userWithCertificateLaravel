@@ -2,20 +2,28 @@
 namespace App\Http\Controllers\API;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Repository\IUserRepository;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
     public $successStatus = 200;
+    public $iUserRepository;
+
+    public function __construct(IUserRepository $iUserRepository)
+	{
+		$this->iUserRepository = $iUserRepository;
+	}
 
     /**
-     * obtem uma lista de uuários
+     * obtem uma lista de usuários
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $users = User::all(); 
+        $users = $this->iUserRepository->findAll();
         return response()->json(['users' => $users], $this->successStatus); 
     }
 
@@ -27,16 +35,23 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = User::validate($request->all());
-        if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()], 401);            
+        DB::beginTransaction();
+        try {
+            $validator = $this->iUserRepository->validate($request->all());
+            if ($validator->fails()) { 
+                return response()->json(['error'=>$validator->errors()], 401);            
+            }
+            $input = $request->all(); 
+            $input['password'] = bcrypt($input['password']); 
+            $user = User::create($input); 
+            $success['token'] =  $user->createToken('MyApp')->accessToken; 
+            $success['name']  =  $user->name;
+            DB::commit();
+            return response()->json(['success'=> $success], $this->successStatus);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error'=> $e->message], $this->successStatus); 
         }
-        $input = $request->all(); 
-        $input['password'] = bcrypt($input['password']); 
-        $user = User::create($input); 
-        $success['token'] =  $user->createToken('MyApp')->accessToken; 
-        $success['name'] =  $user->name;
-        return response()->json(['success'=>$success], $this->successStatus); 
     }
 
     /**

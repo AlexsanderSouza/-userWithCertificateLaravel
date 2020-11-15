@@ -8,7 +8,6 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\Validator;
 
 class User extends Authenticatable
 {
@@ -48,20 +47,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    /**
-     * Valida um usuário
-     *
-     * @param user $data
-     * @return void
-     */
-    public static function validate($data){
-       return Validator::make($data, [ 
-                'name'       => 'required', 
-                'email'      => 'required|email', 
-                'cpf'        => 'required', 
-                'password'   => 'required', 
-                'c_password' => 'required|same:password', 
-            ]);
-    }
 }
