@@ -8,49 +8,49 @@ interface IUserRepository
     /**
      * retorna o usuário respctivo ao id
      *
-     * @return array user
+     * @return User User
      */
     public function find($id);
 
     /**
      * retorna todos os usuários cadastrados
      *
-     * @return array user
+     * @return Object User
      */
     public function findAll();
 
     /**
      * cria um  usuário e retorna o mesmo
      *
-     * @return user
+     * @return User
      */
     public function create(array $data);
 
     /**
      * atualiza um  usuário e retorna o mesmo
      *
-     * @return user
+     * @return User
      */
     public function update(array $data, $id);
 
     /**
      * busca ou cria um usuário e retorna o mesmo
      *
-     * @return user
+     * @return User
      */
     public function firstOrCreate(array $data);
 
     /**
      * apaga um usuário e retorna o sucesso
      *
-     * @return user
+     * @return User
      */
     public function delete($id);
 
     /**
      * Verifica se a entrada de dados corresponde a um usuário valido
      *
-     * @param user $data
+     * @param User $data
      * @return objetc
      */
     public function validate($data);

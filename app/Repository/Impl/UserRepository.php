@@ -11,7 +11,7 @@ class UserRepository extends AbstractRepository implements IUserRepository
 
 	public function __construct(User $model)
 	{
-		$this->model = $model;
+        $this->model = $model;
 	}
     
     /**
@@ -20,7 +20,8 @@ class UserRepository extends AbstractRepository implements IUserRepository
      * @param user $data
      * @return objetc
      */
-    public function validate($data){
+    public function validate($data)
+    {
         return Validator::make($data, [ 
                  'name'       => 'required', 
                  'email'      => 'required|email', 
@@ -28,5 +29,22 @@ class UserRepository extends AbstractRepository implements IUserRepository
                  'password'   => 'required', 
                  'c_password' => 'required|same:password', 
              ]);
-     }
+    }
+
+    /**
+     * retorna o usuário respectivo ao id
+     *
+     * @return User User
+     */
+    public function find($id)
+    {
+        $user = $this->model->find($id);
+        /* traz o certificado do usuário */
+        $user && $user->certificate;
+        /* traz os telefones do usuário */
+        $user && $user->phones;
+        return $user; 
+    }
+
+
 }

@@ -47,4 +47,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    /**
+     * retorna o certificado do usuário
+     */
+    public function certificate()
+    {   
+        return $this->belongsTo('App\Models\Certificates', 'certificate_id');
+    }
+
+    /**
+     * Busca os telefones do usuário
+     */
+    public function phones()
+    {
+        return $this->hasMany('App\Models\Phones');
+    }
 }

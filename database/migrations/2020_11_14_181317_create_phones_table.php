@@ -14,8 +14,11 @@ class CreatePhonesTable extends Migration
     public function up()
     {
         Schema::create('phones', function (Blueprint $table) {
-            $table->increments('id');;
+            $table->increments('id');
             $table->string('phone');
+            $table->unsignedInteger('user_id')->comment('Chave estrangeira de usuário');
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
