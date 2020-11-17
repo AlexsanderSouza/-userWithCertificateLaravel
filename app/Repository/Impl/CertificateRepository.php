@@ -30,5 +30,20 @@ class CertificateRepository extends AbstractRepository implements ICertificateRe
 		/* relaciona o certificado como usuário */
 		$update = $user->update(['certificate_id' => $certificateId]);
         return $update;
+	}
+	
+	/**
+     * busca o certificado do usuário
+     * @param integer $userId
+	 * 
+     * @return Certificates
+     */
+    public function certificateByUserId($userId): Certificates
+    {
+		/* busca o usuário */
+		$user = $this->iUserRepository->find($userId);
+		$user && $certificate = $user->certificate;
+
+        return $certificate ?? new Certificates;
     }
 }

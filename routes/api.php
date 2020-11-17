@@ -25,7 +25,7 @@ Route::middleware('auth:api')->group( function () {
         'store'
     ]);
     Route::group(['prefix' => 'users/{iserId}'], function () {
-        Route::get('certificate', 'App\Http\Controllers\API\CertificatesController@index')->name('user_certificate');
+        Route::get('certificate', 'App\Http\Controllers\API\CertificatesController@show')->name('user_certificate');
         Route::post('certificate', 'App\Http\Controllers\API\CertificatesController@store')->name('user_certificate_store');
     });
 });

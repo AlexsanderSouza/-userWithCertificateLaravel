@@ -41,4 +41,12 @@ interface ICertificateRepository
      * @return boolean
      */
     public function relationshipUser($certificateId, $userId): bool;
+
+    /**
+     * busca o certificado do usuário
+     * @param integer $userId
+	 * 
+     * @return Certificates
+     */
+    public function certificateByUserId($userId): Certificates;
 }

@@ -39,8 +39,6 @@ class UserRepository extends AbstractRepository implements IUserRepository
     public function find($id)
     {
         $user = $this->model->find($id);
-        /* traz o certificado do usuário */
-        $user && $user->certificate;
         /* traz os telefones do usuário */
         $user && $user->phones;
         return $user; 

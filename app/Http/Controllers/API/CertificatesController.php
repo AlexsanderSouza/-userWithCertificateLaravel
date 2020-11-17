@@ -16,19 +16,6 @@ class CertificatesController extends Controller
 	{
 		$this->iCertificateRepository = $iCertificateRepository;
 	}
-    /**
-     * obtem uma lista de usuários
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index($userId)
-    {
-        $x509 = new X509();
-        $certificate = $this->iCertificateRepository->find(5);
-        $cert = $x509->loadX509($certificate->data);
-
-        dd($cert, $x509->getDN(), $x509->getIssuerDN(),$x509->validateSignature(), $x509->validateDate(), 123);
-    }
 
     /**
      * Salva o certificado do usuário
@@ -54,8 +41,33 @@ class CertificatesController extends Controller
             return response()->json(['error'=> 'Não foi possivel salvar o certificado'], 401); 
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
             return response()->json(['error'=> $e->message], 401); 
         }
+    }
+
+    /**
+     * Retorna o certificado do usuário
+     *
+     * @param  integer  $userId
+     * @return \Illuminate\Http\Response
+     */
+    public function show($userId)
+    {
+        try {
+            /* verifica se o id é valido */
+            if(intval($userId) === 0) return response()->json(['error'=> 'O parametro não é um numero inteiro valido'], 401);
+
+            $x509 = new X509();
+            $certificate = $this->iCertificateRepository->certificateByUserId($userId);
+
+            $cert = $x509->loadX509($certificate->data);
+
+            $structureCert = ['DN' => $x509->getDN(), 'issuerDN' => $x509->getIssuerDN(), 'validity' => $cert['tbsCertificate']['validity']];
+        
+            return response()->json($structureCert, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error'=> $e->message], 401);
+        }
+
     }
 }
