@@ -2,28 +2,35 @@
 
 namespace App\Models;
 
+use Laravel\Passport\HasApiTokens;
+
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Os atributos que podem ser atribuídos
      *
      * @var array
      */
     protected $fillable = [
         'name',
+        'cpf',
         'email',
+        'yearbirth',
         'password',
+        'adress',
+        'phones_id',
+        'certificates_id',
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * Os atributos que devem ser ocultados
      *
      * @var array
      */
@@ -33,11 +40,28 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast to native types.
+     * Os atributos que devem ser convertidos em tipos nativos.
      *
      * @var array
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    /**
+     * retorna o certificado do usuário
+     */
+    public function certificate()
+    {   
+        return $this->belongsTo('App\Models\Certificates', 'certificate_id');
+    }
+
+    /**
+     * Busca os telefones do usuário
+     */
+    public function phones()
+    {
+        return $this->hasMany('App\Models\Phones');
+    }
 }

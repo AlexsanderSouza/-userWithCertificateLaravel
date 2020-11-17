@@ -7,6 +7,25 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Instalação
+- Instalar pacotes:
+```bash
+composer install
+```
+## Configuração
+- Configure o banco de dados no arquivo .env
+- Rode as migration (em caso de erro, o banco não foi configurado corretamente):
+```bash
+php artisan migrate
+```
+- Gere as chaves de autenticação para o laravel passport:
+```bash
+php artisan passport:install
+```
+- Sirva a aplicação backend
+```bash
+php artisan serve
+```
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
