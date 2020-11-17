@@ -15,4 +15,11 @@ class Certificates extends Model
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * informa que não existe atributos created_at e updated_at
+     *
+     * @var boolean
+     */
+    public $timestamps = false;
 }

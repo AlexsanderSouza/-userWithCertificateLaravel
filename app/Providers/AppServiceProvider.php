@@ -18,6 +18,12 @@ class AppServiceProvider extends ServiceProvider
             'App\Repository\IUserRepository', 
             'App\Repository\Impl\UserRepository'
         );
+
+        // Para chamar CertificateRepository
+        $this->app->bind(
+            'App\Repository\ICertificateRepository', 
+            'App\Repository\Impl\CertificateRepository'
+        );
     }
 
     /**
