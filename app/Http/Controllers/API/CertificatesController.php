@@ -33,7 +33,6 @@ class CertificatesController extends Controller
             $certificate = $this->iCertificateRepository->create(['data' => file_get_contents($data['certificado'])]);
             /* guarda o certificado no banco */
             $relation = $this->iCertificateRepository->relationshipUser($certificate->id, $userId);
-            
             if($relation){
                 DB::commit();
                 return response()->json(['success'=> 1], 200);

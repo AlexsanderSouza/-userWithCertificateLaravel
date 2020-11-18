@@ -16,14 +16,14 @@ class UserController extends Controller
 	}
 
     /**
-     * obtem uma lista de usuários
+     * retorna o usuário logado
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = $this->iUserRepository->findAll();
-        return response()->json(['users' => $users], $this->successStatus); 
+        $user = $request->user();
+        return response()->json($user, $this->successStatus); 
     }
 
     /**
@@ -48,10 +48,10 @@ class UserController extends Controller
             $user = $this->iUserRepository->create($input);
             /* cria um token */
             $success['token'] =  $user->createToken('MyApp')->accessToken; 
-            $success['name']  =  $user->name;
+            $success['user']  =  $user;
 
             DB::commit();
-            return response()->json(['success'=> $success], $this->successStatus);
+            return response()->json($success, $this->successStatus);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error'=> $e->message], $this->successStatus); 
