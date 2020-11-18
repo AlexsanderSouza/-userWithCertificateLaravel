@@ -26,9 +26,9 @@ class CertificateRepository extends AbstractRepository implements ICertificateRe
     public function relationshipUser($certificateId, $userId): bool
     {
 		/* busca o usuário */
-		$user = $this->iUserRepository->find($userId);
+		// $model = $this->iUserRepository->find($userId);
 		/* relaciona o certificado como usuário */
-		$update = $user->update(['certificate_id' => $certificateId]);
+		$update = $this->iUserRepository->update(['certificate_id' => $certificateId], $userId);
         return $update;
 	}
 	

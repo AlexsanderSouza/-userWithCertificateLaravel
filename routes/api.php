@@ -17,14 +17,15 @@ use App\Http\Controllers\API;
 
 /* Rota para fazer login na API */
 Route::post('login', 'App\Http\Controllers\API\LoginController@login')->name('users_login');
-Route::post('users', 'App\Http\Controllers\API\UserController@store')->name('users_store');
+Route::post('user', 'App\Http\Controllers\API\UserController@store')->name('users_store');
 
 /* Rotas de usuário só são acessadas com autorização */
 Route::middleware('auth:api')->group( function () {
-    Route::apiResource('users', 'App\Http\Controllers\API\UserController')->except([
+    Route::apiResource('user', 'App\Http\Controllers\API\UserController')->except([
         'store'
     ]);
-    Route::group(['prefix' => 'users/{iserId}'], function () {
+    Route::post('logout', 'App\Http\Controllers\API\LoginController@logout')->name('user_logout');
+    Route::group(['prefix' => 'user/{userId}'], function () {
         Route::get('certificate', 'App\Http\Controllers\API\CertificatesController@show')->name('user_certificate');
         Route::post('certificate', 'App\Http\Controllers\API\CertificatesController@store')->name('user_certificate_store');
     });
